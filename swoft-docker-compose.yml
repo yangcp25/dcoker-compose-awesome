@@ -1,0 +1,24 @@
+version: '3.4'
+services:
+  swoft:
+    image: swoft/swoft
+    container_name: swoft-base
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=1
+      - TIMEZONE=Asia/Shanghai
+    restart: always
+    ports:
+      - "9000:18306"
+    volumes:
+      - ./:/var/www/swoft
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    networks:
+      - mynet
+networks:
+  mynet:
+    external: true
+
+
