@@ -24,7 +24,7 @@ services:
     links:
       - "elasticsearch:demo"
 
-#这里要注意，es和eshd要在相同网络才能被links
+#这里要注意，es和eshd要在相同网络才能被links   hd:连接地址 http://192.168.1.3:19200  http://ip地址:19200  或者配置跨域http.cors.enabled: true http.cors.allow-origin: "*"
 networks:
   mynet:
     external: true
