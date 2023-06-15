@@ -15,7 +15,7 @@ services:
       - mynet
   redis:
     container_name: dev-redis
-    image: redis:4-alpine
+    image: redis:6.2.6
     ports:
       - "6379:6379"
     sysctls:
