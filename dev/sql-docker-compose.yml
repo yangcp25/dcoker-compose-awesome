@@ -20,6 +20,10 @@ services:
       - "6379:6379"
     sysctls:
       net.core.somaxconn: 65535
+    volumes:
+      - ./conf/redis.conf:/etc/redis/redis.conf
+      - ./data/redis/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
     restart: always
     networks:
       - mynet
