@@ -7,11 +7,13 @@ services:
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "18500:8500"
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    command: agent -server -bootstrap-expect=1 -node=consul-node-1 -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1 -ui -config-dir=/consul/config
     volumes:
-      - /opt/disk/docker/volumes/consul/conf:/consul/conf
-      - /opt/disk/docker/volumes/consul/data:/consul/data
-    privileged: true
+      - "./consul/data:/consul/data"
+      - "./consul/config:/consul/config"
     networks:
       - mynet
 networks:
