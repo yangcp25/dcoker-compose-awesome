@@ -8,7 +8,7 @@ runtime/
 vendor/
 *.lock
 .phpintel/
-.env
+#.env
 .phpstorm.meta.php
 .DS_Store
 public/devtool/
