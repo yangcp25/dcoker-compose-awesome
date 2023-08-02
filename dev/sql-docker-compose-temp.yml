@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  mysql:
+    image: mysql/mysql-server:5.7 #mac
+    container_name: dev-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: always
+    networks:
+      - testnet
+networks:
+  testnet:
+    name: deploy_testnet
