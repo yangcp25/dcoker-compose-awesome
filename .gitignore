@@ -16,3 +16,7 @@ docker-compose.yml
 composer.cn.json
 composer.lock
 dev/data/
+prod/mysql
+./log
+./mysql-rw_separate/data
+/dev/data/mysql/
