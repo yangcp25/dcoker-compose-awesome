@@ -20,3 +20,4 @@ prod/mysql
 ./log
 ./mysql-rw_separate/data
 /dev/data/mysql/
+/redis-cluster/data/

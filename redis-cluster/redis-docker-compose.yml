@@ -1,0 +1,63 @@
+version: '3.4'
+services:
+  181-redis-6379:
+    container_name: 181-redis-6379
+    image: redis:6.2.6
+#    ports:
+#      - "6371:6379"
+    volumes:
+      - ./conf/172.16.23.181/redis-6379.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+    network_mode: host
+#    networks:
+#      - mynet
+  181-redis-6378:
+    container_name: 181-redis-6378
+    image: redis:6.2.6
+    volumes:
+      - ./conf/172.16.23.181/redis-6378.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+    network_mode: "host"
+  182-redis-6379:
+    container_name: 182-redis-6379
+    image: redis:6.2.6
+    volumes:
+      - ./conf/172.16.23.182/redis-6379.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+    network_mode: "host"
+  182-redis-6378:
+    container_name: 182-redis-6378
+    image: redis:6.2.6
+    volumes:
+      - ./conf/172.16.23.182/redis-6378.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+    network_mode: "host"
+  183-redis-6379:
+    container_name: 183-redis-6379
+    image: redis:6.2.6
+    volumes:
+      - ./conf/172.16.23.183/redis-6379.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+    network_mode: "host"
+  183-redis-6378:
+    container_name: 183-redis-6378
+    image: redis:6.2.6
+    volumes:
+      - ./conf/172.16.23.183/redis-6378.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+    network_mode: "host"
+#networks:
+#  mynet:
+#    external: true
