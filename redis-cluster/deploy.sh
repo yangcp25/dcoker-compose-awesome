@@ -9,3 +9,4 @@ cluster info
 cluster nodes
 
 # prod
+redis-cli -a 12345qruafj --cluster create 172.16.23.181:6379 172.16.23.181:6378 172.16.23.182:6379 172.16.23.182:6378 172.16.23.183:6379 172.16.23.183:6378 --cluster-replicas 1
