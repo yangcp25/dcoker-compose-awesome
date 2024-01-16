@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  nginx-slave:
+    image: nginx
+    container_name: nginx-slave
+    restart: always
+    networks:
+      - backend_network
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-slave.conf:/etc/nginx/nginx.conf
+      - ./logs/nginx:/var/log/nginx
+
+  keepalived-slave:
+    image: osixia/keepalived
+    container_name: keepalived-slave
+    restart: always
+    networks:
+      - backend_network
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./keepalived-slave.conf:/usr/local/etc/keepalived/keepalived.conf
+      - ./check-nginx.sh:/etc/keepalived/check-nginx.sh
+#    command:
+#      - "/bin/bash"
+#      - "-c"
+#      - "apk --no-cache add mailx"
+
+networks:
+  backend_network:
+    driver: bridge

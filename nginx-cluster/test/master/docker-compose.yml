@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  nginx-master:
+    image: nginx:1.24-alpine3.17-perl
+    container_name: nginx-master
+    restart: always
+    networks:
+      - backend_network
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-master.conf:/etc/nginx/nginx.conf
+      - ./logs/nginx:/var/log/nginx
+
+  keepalived-master:
+    image: osixia/keepalived:2.0.20
+    container_name: keepalived-master
+    restart: always
+    networks:
+      - backend_network
+    cap_add:
+      - NET_ADMIN
+    volumes:
+#      - ./keepalived-master.conf:/usr/local/etc/keepalived/keepalived.conf
+      - ./keepalived-master.conf:/container/service/keepalived/assets/keepalived.conf
+      - ./check-nginx.sh:/etc/keepalived/check-nginx.sh
+#    command:
+#      - "/bin/bash"
+#      - "-c"
+#      - "apk --no-cache add mailx"
+
+networks:
+  backend_network:
+    driver: bridge
