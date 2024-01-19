@@ -1,0 +1,22 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+#      - ./nginx-master.conf:/etc/nginx/nginx.conf
+      - ./keepalived-master.conf:/etc/keepalived/keepalived.conf
+      - ./check-nginx.sh:/etc/keepalived/check-nginx.sh
+#    network_mode: host
+    stdin_open: true
+    tty: true
+    restart: always
+    ports:
+      - 1215:80
+      - 1216:443
+    networks:
+      - mynet
+networks:
+  mynet:
+    external: true
