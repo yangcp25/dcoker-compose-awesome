@@ -54,3 +54,7 @@ minio 对象存储
 #### 通用php-fpm 框架
 
 [web-docker-compose.yml](web-docker-compose.yml)
+
+### nginx
+
+[nginx-cluster](nginx-cluster)
