@@ -1,0 +1,39 @@
+version: "3"
+services:
+  nginx_master:
+    image: nginx:1.25.3-alpine
+    volumes:
+      - ./conf/index-master.html:/usr/share/nginx/html/index.html
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf/vhost.conf:/etc/nginx/conf.d/vhost.conf
+      - ./data/nginx/log:/var/log/nginx
+    ports:
+      - 9000:80
+    networks:
+      - mynet
+  keepalived:
+    image: osixia/keepalived:2.0.20
+    volumes:
+      - ./conf/index-master.html:/usr/share/nginx/html/index.html
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf/vhost.conf:/etc/nginx/conf.d/vhost.conf
+      - ./data/nginx/log:/var/log/nginx
+    ports:
+      - 9000:80
+    environment:
+      - KEEPALIVED_INTERFACE=ens160
+      - KEEPALIVED_PASSWORD=ycp
+#      - KEEPALIVED_STATE=BACKUP
+      - KEEPALIVED_STATE=MASTER
+      - KEEPALIVED_ROUTER_ID=ens160
+      - KEEPALIVED_UNICAST_PEERS=ens160
+      - KEEPALIVED_VIRTUAL_IPS=ens160
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    networks:
+      - mynet
+networks:
+  mynet:
+    external: true

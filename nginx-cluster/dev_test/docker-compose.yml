@@ -1,17 +1,23 @@
 version: "3"
-services:
+services: # 指定服务
+  # 主服务
   nginx_master:
     build:
       context: ./
+      # 指定打镜像的镜像文件
       dockerfile: ./Dockerfile
+      # 镜像挂载
     volumes:
       - ./index-master.html:/usr/share/nginx/html/index.html
       - ./keepalived-master.conf:/etc/keepalived/keepalived.conf
+    # 容器网络
     networks:
       static-network:
-        ipv4_address: 172.20.128.2
+        ipv4_address: 172.19.128.2
     cap_add:
       - NET_ADMIN
+    privileged: true # 添加特权选项
+  # 辅服务（以下配置参考主服务）
   nginx_slave:
     build:
       context: ./
@@ -21,19 +27,24 @@ services:
       - ./keepalived-slave.conf:/etc/keepalived/keepalived.conf
     networks:
       static-network:
-        ipv4_address: 172.20.128.3
+        ipv4_address: 172.19.128.3
     cap_add:
       - NET_ADMIN
+    privileged: true # 添加特权选项
+  # 代理，为了解决容器IP映射到本机
   proxy:
     image: haproxy:1.7-alpine
+    # 代理，监听的端口，外界端口是8000。映射到haproxy的6301端口上
     ports:
       - 8000:6301
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     networks:
       - static-network
+    privileged: true # 添加特权选项
+# 指定网络
 networks:
   static-network:
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.19.0.0/16
