@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  keepalived:
+    image: osixia/keepalived:latest
+    container_name: keepalived-container
+    networks:
+      static-network:
+        ipv4_address: 172.22.128.4
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VIRTUAL_IP=172.22.128.11
+      - VIRTUAL_ROUTER_ID=51
+      - PRIORITY=101
+      - INTERFACE=eth0
+    volumes:
+      - ./keepalived-master.conf:/usr/local/etc/keepalived/keepalived.conf
+    restart: always
+    privileged: true
+    command: --loglevel debug --copy-service
+networks:
+  static-network:
+    external: true
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
