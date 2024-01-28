@@ -1,0 +1,98 @@
+version: '3.4'
+services:
+  181-redis-6379:
+    container_name: 181-redis-6379
+    image: redis:6.2.6
+    volumes:
+      - ./conf-win/172.16.23.181/redis-6379.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+#    network_mode: host
+    ports:
+      - "6379:6379"
+      - "16379:16379"
+    networks: # 指定网关
+      mynet:
+        ipv4_address: 172.18.0.11
+  181-redis-6378:
+    container_name: 181-redis-6378
+    image: redis:6.2.6
+    volumes:
+      - ./conf-win/172.16.23.181/redis-6378.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "6378:6378"
+      - "16378:16378"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.12
+  182-redis-6379:
+    container_name: 182-redis-6379
+    image: redis:6.2.6
+    volumes:
+      - ./conf-win/172.16.23.182/redis-6379.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "6377:6377"
+      - "16377:16377"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.13
+  182-redis-6378:
+    container_name: 182-redis-6378
+    image: redis:6.2.6
+    volumes:
+      - ./conf-win/172.16.23.182/redis-6378.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "6376:6376"
+      - "16376:16376"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.14
+  183-redis-6379:
+    container_name: 183-redis-6379
+    image: redis:6.2.6
+    volumes:
+      - ./conf-win/172.16.23.183/redis-6379.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "6375:6375"
+      - "16375:16375"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.15
+  183-redis-6378:
+    container_name: 183-redis-6378
+    image: redis:6.2.6
+    volumes:
+      - ./conf-win/172.16.23.183/redis-6378.conf:/etc/redis/redis.conf
+      - ./data/redis/6379/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
+#    network_mode: "host"
+    ports:
+      - "6374:6374"
+      - "16374:16374"
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.16
+networks:
+  mynet:
+    external: true
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

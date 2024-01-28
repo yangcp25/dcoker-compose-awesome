@@ -1,6 +1,7 @@
 [mysqld]
+
 ## 设置server_id，同一局域网中需要唯一
-server_id=202
+server_id=102
 
 ## 指定不需要同步的数据库名称
 binlog-ignore-db=mysql
@@ -29,4 +30,5 @@ log_slave_updates=1
 
 ## slave设置为只读（具有super权限的用户除外）
 read_only=1
+secure-file-priv=NULL
 

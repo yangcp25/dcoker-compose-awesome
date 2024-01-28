@@ -10,8 +10,7 @@ services:
       - "3307:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/mysql/my.cnf
-      - ./data/mysql-files:/var/lib/mysql-files
+      - ./mysql/liunx/my.cnf:/etc/mysql/my.cnf
     restart: always
     networks:
       - mynet
@@ -25,8 +24,7 @@ services:
       - "3308:3306"
     volumes:
       - ./data/slave/mysql-slave:/var/lib/mysql
-      - ./mysql/my-slave.cnf:/etc/mysql/my.cnf
-      - ./data/slave/mysql-files:/var/lib/mysql-files
+      - ./mysql/liunx/my-slave.cnf:/etc/mysql/my.cnf
     restart: always
     networks:
       - mynet
