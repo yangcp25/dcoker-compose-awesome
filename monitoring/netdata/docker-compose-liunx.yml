@@ -1,0 +1,50 @@
+version: '3.4'
+services:
+  netdata:
+    image: netdata/netdata
+    container_name: netdata
+    ports:
+      - 19999:19999
+    volumes:
+      - ./data/netdataconfig:/etc/netdata
+      - ./data/netdatalib:/var/lib/netdata
+      - ./data/netdatacache:/var/cache/netdata
+      - ./data/etc/passwd:/host/etc/passwd:ro
+      - ./data/etc/group:/host/etc/group:ro
+      - ./data/proc:/host/proc:ro
+      - ./data/sys:/host/sys:ro
+      - ./data/etc/os-release:/host/etc/os-release:ro
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    networks:
+      - mynet
+  netdata_liunx:
+    image: netdata/netdata
+    container_name: netdata_liunx
+    ports:
+      - 19999:19999
+    volumes:
+      - data/netdataconfig:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    networks:
+      - mynet
+networks:
+      mynet:
+        external: true
+
+
+

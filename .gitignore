@@ -21,3 +21,4 @@ prod/mysql
 /dev/data/mysql/
 /redis-cluster/data/
 /mysql-rw_separate/data/
+/monitoring/netdata/data/

@@ -58,3 +58,6 @@ minio 对象存储
 ### nginx
 
 [nginx-cluster](nginx-cluster)
+
+### 服务器监控 
+[monitoring](monitoring)
