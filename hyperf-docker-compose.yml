@@ -1,8 +1,8 @@
 version: '3.4'
 services:
-  swoft:
+  hyperf:
     image: hyperf/hyperf:8.0-alpine-v3.12-swoole
-    container_name:
+    container_name: hyperf
     environment:
       - APP_ENV=dev
       - APP_DEBUG=1
