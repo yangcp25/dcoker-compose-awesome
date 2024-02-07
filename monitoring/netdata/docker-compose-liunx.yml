@@ -14,27 +14,10 @@ services:
       - ./data/proc:/host/proc:ro
       - ./data/sys:/host/sys:ro
       - ./data/etc/os-release:/host/etc/os-release:ro
-    restart: unless-stopped
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - apparmor=unconfined
-    networks:
-      - mynet
-  netdata_liunx:
-    image: netdata/netdata
-    container_name: netdata_liunx
-    ports:
-      - 19999:19999
-    volumes:
-      - data/netdataconfig:/etc/netdata
-      - netdatalib:/var/lib/netdata
-      - netdatacache:/var/cache/netdata
-      - /etc/passwd:/host/etc/passwd:ro
-      - /etc/group:/host/etc/group:ro
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /etc/os-release:/host/etc/os-release:ro
+#      - ./netdata-captch/index.html:/usr/share/netdata/web/index.html
+#      - ./netdata-captch/dashboard.js:/usr/share/netdata/web/dashboard.js
+#      - ./netdata-captch/dashboard_info.js:/usr/share/netdata/web/dashboard_info.js
+#      - ./netdata-captch/main.js:/usr/share/netdata/web/main.js
     restart: unless-stopped
     cap_add:
       - SYS_PTRACE
@@ -43,8 +26,8 @@ services:
     networks:
       - mynet
 networks:
-      mynet:
-        external: true
+  mynet:
+    external: true
 
 
 
