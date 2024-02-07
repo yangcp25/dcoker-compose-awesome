@@ -1,0 +1,93 @@
+version: '3.8'
+services:
+  node1:
+    container_name: node1
+    image: percona/percona-xtradb-cluster:8.0.35
+    restart: always
+    privileged: true
+    ports:
+      - '13306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - XTRABACKUP_PASSWORD=root
+      - CLUSTER_NAME=PXC
+    volumes:
+      - ./data/n1-data:/var/lib/mysql
+      - ./data/log/n1-log:/var/log/mysql
+    networks:
+      - pxc
+
+  node2:
+    container_name: node2
+    image: percona/percona-xtradb-cluster:8.0.35
+    restart: always
+    privileged: true
+    ports:
+      - '23306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - XTRABACKUP_PASSWORD=root
+      - CLUSTER_NAME=PXC
+      - CLUSTER_JOIN=node1
+    volumes:
+      - ./data/n2-data:/var/lib/mysql
+      - ./data/log/n2-log:/var/log/mysql
+    networks:
+      - pxc
+
+  node3:
+    container_name: node3
+    image: percona/percona-xtradb-cluster:8.0.35
+    restart: always
+    privileged: true
+    ports:
+      - '33306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - XTRABACKUP_PASSWORD=root
+      - CLUSTER_NAME=PXC
+      - CLUSTER_JOIN=node1
+    volumes:
+      - ./data/n3-data:/var/lib/mysql
+      - ./data/log/n3-log:/var/log/mysql
+    networks:
+      - pxc
+
+  node4:
+    container_name: node4
+    image: percona/percona-xtradb-cluster:8.0.35
+    restart: always
+    privileged: true
+    ports:
+      - '43306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - XTRABACKUP_PASSWORD=root
+      - CLUSTER_NAME=PXC
+      - CLUSTER_JOIN=node1
+    volumes:
+      - ./data/n4-data:/var/lib/mysql
+      - ./data/log/n4-log:/var/log/mysql
+    networks:
+      - pxc
+
+  node5:
+    container_name: node5
+    image: percona/percona-xtradb-cluster:8.0.35
+    restart: always
+    privileged: true
+    ports:
+      - '53306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - XTRABACKUP_PASSWORD=root
+      - CLUSTER_NAME=PXC
+      - CLUSTER_JOIN=node1
+    volumes:
+      - ./data/n5-data:/var/lib/mysql
+      - ./data/log/n5-log:/var/log/mysql
+    networks:
+      - pxc
+networks:
+  pxc:
+    external: true

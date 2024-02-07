@@ -10,6 +10,10 @@
 
 [mysql-rw_separate](mysql-rw_separate)
 
+#### mysql 分布式数据库 
+参考 https://docs.percona.com/percona-xtradb-cluster/8.0/index.html
+[mysql-pxc-cluster](mysql-pxc-cluster)
+
 ### redis
 #### 单机版本
 [sql-docker-compose.yml](sql-docker-compose.yml)
