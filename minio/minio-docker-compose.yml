@@ -1,7 +1,7 @@
 version: '3'
 services:
   minio:
-    image: minio/minio
+    image: minio/minio:latest
     hostname: "minio"
     ports:
       - 9000:9000 # api 端口
