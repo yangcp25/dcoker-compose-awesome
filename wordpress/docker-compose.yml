@@ -1,21 +1,21 @@
 version: '3.4'
 services:
   wordpress:
-    image: wordpress
+    image: wordpress:php8.3-fpm-alpine
     container_name: wordpress
     restart: always
-    ports:
-      - "8082:80"
     environment:
-      WORDPRESS_DB_HOST: 127.0.0.1
+      WORDPRESS_DB_HOST: mysql-wordpress
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: root
-      WORDPRESS_DB_PORT: 3309
+#      WORDPRESS_DB_PORT: 3309
       WORDPRESS_DB_NAME: wordpress_db
     volumes:
       - ./data/wordpress:/var/www/html
     networks:
       - my_net
+    depends_on:
+      - mysql-wordpress
   mysql-wordpress:
 #    image: mysql:8.0.14
     image: mysql/mysql-server:8.0.14 #mac
@@ -29,6 +29,20 @@ services:
     restart: always
     networks:
       - my_net
+  nginx-wordpress:
+    image: nginx:1.25.3-alpine
+    container_name: nginx-wordpress
+    restart: always
+    ports:
+      - 8082:80
+    volumes:
+      - ./deploy/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./deploy/nginx/conf/vhost.conf:/etc/nginx/conf.d/default.conf
+      - ./deploy/nginx/data/nginx/log:/var/log/nginx
+    networks:
+      - my_net
+    depends_on:
+      - wordpress
 networks:
   my_net:
     external: true
