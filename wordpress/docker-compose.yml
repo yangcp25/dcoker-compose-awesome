@@ -1,0 +1,38 @@
+version: '3.4'
+services:
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    restart: always
+    ports:
+      - "8082:80"
+    environment:
+      WORDPRESS_DB_HOST: 127.0.0.1
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_PORT: 3309
+      WORDPRESS_DB_NAME: wordpress_db
+    volumes:
+      - ./data/wordpress:/var/www/html
+    networks:
+      - my_net
+  mysql-wordpress:
+#    image: mysql:8.0.14
+    image: mysql/mysql-server:8.0.14 #mac
+    container_name: mysql-wordpress
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3309:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: always
+    networks:
+      - my_net
+networks:
+  my_net:
+    external: true
+volumes:
+  wordpress:
+  mysql:
+
