@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mediamtx:
+    image: bluenviron/mediamtx
+    environment:
+      - MTX_PROTOCOLS=tcp
+#      - set MTX_WEBRTCADDITIONALHOSTS to your local IP address.
+      - MTX_WEBRTCADDITIONALHOSTS=192.168.5.18
+      - TZ=Asia/Shanghai
+    ports:
+      - "8554:8554"
+      - "1935:1935"
+      - "8888:8888"
+      - "8889:8889"
+      - "8890:8890/udp"
+      - "8189:8189/udp"
+    restart: always
