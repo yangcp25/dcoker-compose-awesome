@@ -1,0 +1,20 @@
+version: '3.4'
+services:
+  swoole_web:
+    image: phpswoole/swoole:5.1-php8.0-alpine
+    container_name: swoole_web
+    environment:
+      - APP_ENV=dev
+      - PHP_DATE_TIMEZONE=Asia/Shanghai
+    restart: always
+    ports:
+      - "8090:80"
+    volumes:
+      - ./:/app/
+    networks:
+      - my_net
+networks:
+  my_net:
+    external: true
+
+
