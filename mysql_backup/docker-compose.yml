@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  gobackup:
+    image: huacnlee/gobackup:latest
+    container_name: gobackup
+    volumes:
+      - ./gobackup_config:/etc/gobackup
+    ports:
+      - "2703:2703"
+    restart: unless-stopped
