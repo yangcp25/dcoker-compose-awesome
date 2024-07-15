@@ -75,3 +75,7 @@ minio 对象存储
 ### 博客网站
 
 [wordpress](wordpress)
+
+### mysql 定時備份
+
+[mysql_backup](mysql_backup)

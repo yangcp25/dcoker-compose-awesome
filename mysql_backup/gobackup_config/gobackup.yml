@@ -1,0 +1,33 @@
+# gobackup config example
+# -----------------------
+# Put this file in follow place:
+# ~/.gobackup/gobackup.yml or /etc/gobackup/gobackup.yml
+web:
+  username: sdsh_back_admin
+  password: sdsh_back_admin_pass_2024
+models:
+  mysql_dump:
+    description: "mysql_dump_sdsh"
+    schedule:
+      cron: "1 * * * *"
+    compress_with:
+      type: tgz
+    default_storage: minio
+    storages:
+      minio:
+        endpoint: http://120.27.225.90:9000
+        type: minio
+        bucket: test
+        path: backups
+        access_key_id:
+        secret_access_key:
+        timeout: 60
+        max_retries: 5
+    databases:
+      dummy_localhost:
+        type: mysql
+        host: 120.27.225.90
+        port: 3306
+        database: jjj_shop_multi
+        username:
+        password:
