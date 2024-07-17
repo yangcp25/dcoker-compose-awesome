@@ -6,6 +6,7 @@ services:
     container_name: ycp-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Shanghai
     ports:
       - "13306:3306"
     volumes:
