@@ -13,13 +13,13 @@ services:
 #      - 21116:21116/udp       # UDP心跳/ID服务器
 #      - 21118:21118           # 如果要运行web客户端，则使用TCP进行web套接字
     image: rustdesk/rustdesk-server:latest
-    command: hbbs -r :21117
+    command: hbbs -r 47.109.158.185:21117
     volumes:
       - /data/rustdesk/hbbs:/root
     environment:
-      - "RELAY=:21117"   # 运行这些容器的服务器的【IP:port】或域名
+      - "RELAY=47.109.158.185:21117"   # 运行这些容器的服务器的【IP:port】或域名
       - "ENCRYPTED_ONLY=1"      # 开启加密
-      - "KEY="            # 自定义KEY，去掉这一行可以自动生成
+      - "KEY=1994okyang.."            # 自定义KEY，去掉这一行可以自动生成
 #    networks:
 #      - rustdesk-net
     depends_on:
