@@ -4,9 +4,12 @@ services:
   sftp:
     image: atmoz/sftp
     ports:
-      - "12222:22"  # 将容器的22端口映射到主机的22端口
+      - "2222:22"  # 将容器的22端口映射到主机的22端口
     volumes:
-      - ./sftp-data:/home/upload  # 将本地目录映射到容器的/home目录
-    environment:
-      SFTP_USERS: "user:password:1001:upload"  # 设置用户名、密码和用户ID
-    command: /bin/sh -c "chmod -R 0777 /home/upload"
+      - ./sftp-data:/home/upload/test  # 将本地目录映射到容器的/home目录
+    #    environment:
+    #      SFTP_USERS: "user:password:1001"  # 设置用户名、密码和用户ID
+    stdin_open: true
+    tty: true
+    command: upload:password:1001
+#    command: /bin/sh -c "chmod -R 0777 /home/upload"
