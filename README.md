@@ -79,3 +79,8 @@ minio 对象存储
 ### mysql 定時備份
 
 [mysql_backup](mysql_backup)
+
+
+### postgresql
+
+[pgsql-single](pgsql-single)
