@@ -1,0 +1,112 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: m.daocloud.io/bitnami/zookeeper:latest
+    container_name: zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+    networks:
+      - my_net
+
+  kafka:
+    image: m.daocloud.io/bitnami/kafka:latest
+    container_name: kafka
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://120.27.225.90:9092,EXTERNAL://120.27.225.90:9093  # 替换成自己的IP地址
+      - KAFKA_LISTENERS=INTERNAL://:9092,EXTERNAL://:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    networks:
+      - my_net
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: m.daocloud.io/provectuslabs/kafka-ui:latest
+    ports:
+      - 8180:8080
+    depends_on:
+      - kafka
+    environment:
+      DYNAMIC_CONFIG_ENABLED: "TRUE"
+    networks:
+      - my_net
+
+  elasticsearch:
+    image: m.daocloud.io/elasticsearch:7.17.4
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./es/plugins:/usr/share/elasticsearch/plugins #插件文件挂载
+      - ./es/data:/usr/share/elasticsearch/data #数据文件挂载
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - 'cluster.name=elasticsearch' #设置集群名称为elasticsearch
+      - 'discovery.type=single-node' #以单一节点模式启动
+      - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m' #设置使用jvm内存大小
+      - 'xpack.security.enabled=true'
+      - 'xpack.security.authc.api_key.enabled=true'
+      - 'ELASTIC_PASSWORD=123456'
+    networks:
+      - my_net
+
+  logstash:
+    image: m.daocloud.io/logstash:7.17.4
+    container_name: logstash
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - './logstash/pipeline/logstash.conf:/usr/share/logstash/config/logstash.conf'
+      - './logstash/pipeline/logstash.yml:/usr/share/logstash/config/logstash.yml'
+    ports:
+      - '5045:5044'
+      - '50001:50000/tcp'
+      - '50001:50000/udp'
+      - '9601:9600'
+    environment:
+      LS_JAVA_OPTS: -Xms224m -Xmx224m
+      TZ: Asia/Shanghai
+      MONITORING_ENABLED: "true"
+    links:
+      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
+    networks:
+      - my_net
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: m.daocloud.io/kibana:7.17.4
+    container_name: kibana
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - '5601:5601'
+    links:
+      - elasticsearch:es #可以用es这个域名访问elasticsearch服务
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200 #设置访问elasticsearch的地址
+      - 'elasticsearch.hosts=http://elasticsearch:9200' #设置访问elasticsearch的地址
+      - I18N_LOCALE=zh-CN
+    networks:
+      - my_net
+    depends_on:
+      - elasticsearch
+
+networks:
+  my_net:
+    driver: bridge

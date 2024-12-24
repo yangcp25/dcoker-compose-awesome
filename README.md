@@ -30,7 +30,7 @@ minio 对象存储
 
 ### 消息队列
 #### kafka
-[kafka-docker-compose.yml](kafka-docker-compose.yml)
+[kafka-docker-compose.yml](kafka/kafka-docker-compose.yml)
 #### rabbitmq
 [rabbitmq-docker-compose.yml](rabbitmq-docker-compose.yml)
 

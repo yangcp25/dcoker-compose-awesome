@@ -1,0 +1,15 @@
+filebeat.inputs:
+  - type: kafka
+    enabled: true
+    hosts: ["kafka:9092"]  # Kafka brokers 的地址
+    topic: "logrus-logs-*"  # Kafka 中的日志 topic
+    group_id: "filebeat-consumer-group"  # Kafka 消费者组
+    client_id: "filebeat"  # Kafka 客户端 ID
+    codec.json: true  # 假设日志是 JSON 格式
+    max_message_size: 10485760  # 最大消息大小（10MB）
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]  # 将日志发送到 Elasticsearch
+  index: "filebeat-logs-%{+yyyy.MM.dd}"  # 日志索引格式
+  setup.template.name: "filebeat"
+  setup.template.pattern: "filebeat-*"
