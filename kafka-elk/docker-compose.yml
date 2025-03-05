@@ -1,49 +1,53 @@
 version: '3'
 
 services:
-  zookeeper:
-    image: m.daocloud.io/bitnami/zookeeper:latest
-    container_name: zookeeper
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-    ports:
-      - "2181:2181"
-    networks:
-      - my_net
+#  zookeeper:
+#    image: bitnami/zookeeper:latest
+#    container_name: zookeeper
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+#    ports:
+#      - "2181:2181"
+#    networks:
+#      - my_net
+#    mem_reservation: 256m
 
   kafka:
-    image: m.daocloud.io/bitnami/kafka:latest
+    image: bitnami/kafka:latest
     container_name: kafka
     environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://120.27.225.90:9092,EXTERNAL://120.27.225.90:9093  # 替换成自己的IP地址
-      - KAFKA_LISTENERS=INTERNAL://:9092,EXTERNAL://:9093
+      - KAFKA_KRAFT_MODE=true  # 启用 KRaft 模式
+      - KAFKA_LISTENER_SECURITY_PROTOCOL=PLAINTEXT
+      - KAFKA_LISTENERS=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://120.27.225.90:9092,EXTERNAL://120.27.225.90:9093  # 替换为自己的 IP 地址
       - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_PROCESS_ROLES=broker,controller  # 使 Kafka 既作为 broker 也作为 controller
+      - KAFKA_LISTENER_NAME_INTERNAL=INTERNAL  # 内部监听器名称
+      - KAFKA_LISTENER_NAME_EXTERNAL=EXTERNAL  # 外部监听器名称
       - ALLOW_PLAINTEXT_LISTENER=yes
-    depends_on:
-      - zookeeper
     ports:
       - "9092:9092"
       - "9093:9093"
     networks:
       - my_net
+    mem_reservation: 512m
 
-  kafka-ui:
-    container_name: kafka-ui
-    image: m.daocloud.io/provectuslabs/kafka-ui:latest
-    ports:
-      - 8180:8080
-    depends_on:
-      - kafka
-    environment:
-      DYNAMIC_CONFIG_ENABLED: "TRUE"
-    networks:
-      - my_net
+#  kafka-ui:
+#    container_name: kafka-ui
+#    image: provectuslabs/kafka-ui:latest
+#    ports:
+#      - 8180:8080
+#    depends_on:
+#      - kafka
+#    environment:
+#      DYNAMIC_CONFIG_ENABLED: "TRUE"
+#    networks:
+#      - my_net
+#    mem_reservation: 128m
 
   elasticsearch:
-    image: m.daocloud.io/elasticsearch:7.17.4
+    image: elasticsearch:7.17.4
     volumes:
       - /etc/localtime:/etc/localtime
       - ./es/plugins:/usr/share/elasticsearch/plugins #插件文件挂载
@@ -56,15 +60,16 @@ services:
     environment:
       - 'cluster.name=elasticsearch' #设置集群名称为elasticsearch
       - 'discovery.type=single-node' #以单一节点模式启动
-      - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m' #设置使用jvm内存大小
+      - 'ES_JAVA_OPTS=-Xms256m -Xmx256' #设置使用jvm内存大小
       - 'xpack.security.enabled=true'
       - 'xpack.security.authc.api_key.enabled=true'
       - 'ELASTIC_PASSWORD=123456'
     networks:
       - my_net
+    mem_reservation: 256m
 
   logstash:
-    image: m.daocloud.io/logstash:7.17.4
+    image: logstash:7.17.4
     container_name: logstash
     restart: always
     volumes:
@@ -77,7 +82,7 @@ services:
       - '50001:50000/udp'
       - '9601:9600'
     environment:
-      LS_JAVA_OPTS: -Xms224m -Xmx224m
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
       TZ: Asia/Shanghai
       MONITORING_ENABLED: "true"
     links:
@@ -86,9 +91,10 @@ services:
       - my_net
     depends_on:
       - elasticsearch
+    mem_reservation: 256m
 
   kibana:
-    image: m.daocloud.io/kibana:7.17.4
+    image: kibana:7.17.4
     container_name: kibana
     restart: always
     volumes:
@@ -106,6 +112,7 @@ services:
       - my_net
     depends_on:
       - elasticsearch
+    mem_reservation: 256m
 
 networks:
   my_net:
