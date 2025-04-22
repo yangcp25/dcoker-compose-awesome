@@ -1,17 +1,30 @@
-version: '3.7'
+version: '3.4'
 services:
-  mysql:
-    image: mysql/mysql-server:5.7 #mac
+  mysql-8:
+    #    image: mysql:8.0.14
+    image: mysql/mysql-server:8.0.14 #mac
     container_name: dev-mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=root
     ports:
-      - "3306:3306"
+      - "13306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
     restart: always
+  redis:
+    container_name: dev-redis
+    image: redis:6.2.6
+    ports:
+      - "16379:6379"
+    sysctls:
+      net.core.somaxconn: 65535
+    volumes:
+      - ./conf/redis.conf:/etc/redis/redis.conf
+      - ./data/redis/data:/data
+    command: [ "redis-server","/etc/redis/redis.conf" ]
+    restart: always
     networks:
-      - testnet
+      - my_net
 networks:
-  testnet:
-    name: deploy_testnet
+  my_net:
+    external: true
