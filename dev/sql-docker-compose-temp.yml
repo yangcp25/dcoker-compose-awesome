@@ -11,6 +11,8 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
     restart: always
+    networks:
+      - my_net
   redis:
     container_name: dev-redis
     image: redis:6.2.6

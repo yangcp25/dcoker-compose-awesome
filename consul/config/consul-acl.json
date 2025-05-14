@@ -3,6 +3,10 @@
     "enabled": true,
     "default_policy": "deny",
     "down_policy": "extend-cache",
-    "enable_token_persistence": true
+    "enable_token_persistence": true,
+    "tokens": {
+      "master": "kse_config_token_2024",
+      "agent": "kse_config_agent_token_2024"
+    }
   }
 }

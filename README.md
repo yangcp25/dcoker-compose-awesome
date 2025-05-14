@@ -44,7 +44,7 @@ minio 对象存储
 [click_house-docker-compose.yml](click_house-docker-compose.yml)
 
 ### consul
-[consul-docker-compose.yml](consul-docker-compose.yml)
+[consul-docker-compose.yml](consul/consul-docker-compose.yml)
 
 ### php 环境框架
 
