@@ -21,7 +21,7 @@ networks:
 
 services:
   mysql:
-    image: mariadb:11.7
+    image: registry.cn-shanghai.aliyuncs.com/ycp_code/mariadb11:v1.0.0
     container_name: compose-mysql
     hostname: mysql
     restart: always
@@ -42,7 +42,7 @@ services:
       - hertzbeat
 
   iotdb:
-    image: apache/iotdb:1.2.2-standalone
+    image: registry.cn-shanghai.aliyuncs.com/ycp_code/iotdb:v1.0.0
     container_name: compose-iotdb
     hostname: iotdb
     restart: always
@@ -63,7 +63,7 @@ services:
       - hertzbeat
 
   hertzbeat:
-    image: apache/hertzbeat:1.7.2
+    image: registry.cn-shanghai.aliyuncs.com/ycp_code/hertzbeat:v1.0.0
     container_name: compose-hertzbeat
     hostname: hertzbeat
     restart: always
@@ -81,7 +81,7 @@ services:
       - ./ext-lib:/opt/hertzbeat/ext-lib
       - ./logs:/opt/hertzbeat/logs
     ports:
-      - "1157:1157"
-      - "1158:1158"
+      - "11157:1157"
+      - "11158:1158"
     networks:
       - hertzbeat
