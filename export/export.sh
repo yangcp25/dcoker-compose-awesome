@@ -2,13 +2,13 @@
 
 # === Configuration ===
 # 1. 要导出的镜像，例如 "ubuntu:22.04" 或 "almalinux:8"
-IMAGE_TO_EXPORT="mariadb:11.7"
+IMAGE_TO_EXPORT="rabbitmq:3.11.4-management"
 
 # 2. 目标平台架构, 例如 "linux/amd64", "linux/arm64", "linux/s390x"
 TARGET_PLATFORM="linux/amd64"
 
 # 3. 输出的 .tar 文件名
-OUTPUT_FILENAME="mariadb_8_7.tar"
+OUTPUT_FILENAME="rabbitmq.tar"
 # === End of Configuration ===
 
 

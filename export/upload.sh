@@ -4,3 +4,8 @@ docker load < almalinux-amd64.tar
 
 docker tag 1e867b17de43 registry.cn-shanghai.aliyuncs.com/ycp_code/hertzbeat:v1.0.0
 docker push registry.cn-shanghai.aliyuncs.com/ycp_code/hertzbeat:v1.0.0
+
+docker load < rabbitmq.tar
+
+docker tag b366f32c36dc registry.cn-shanghai.aliyuncs.com/ycp_code/rabbitmq:v1.0.0
+docker push registry.cn-shanghai.aliyuncs.com/ycp_code/rabbitmq:v1.0.0
