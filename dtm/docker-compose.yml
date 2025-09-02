@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  dtm:
+    image: yedf/dtm:latest
+    container_name: dtm
+    restart: always
+    ports:
+      - "36789:36789"   # HTTP API
+      - "36790:36790"   # gRPC API
+    environment:
+      STORE_DRIVER: mysql
+      STORE_HOST: dev-mysql
+      STORE_USER: root
+      STORE_PASSWORD: root
+      STORE_DB: dtm
+      STORE_PORT: 3306
+    networks:
+      - my_net
+networks:
+  my_net:
+    external: true
