@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nacos:
+    image: nacos/nacos-server:v3.0.3
+    container_name: nacos
+    environment:
+      # 单机模式，使用内置数据库
+      - MODE=standalone
+      - PREFER_HOST_MODE=hostname
+      # 启用认证并设置令牌
+      - NACOS_AUTH_ENABLE=true
+      - NACOS_AUTH_TOKEN=VGhpc1lzTXlDdXN0b11TZWNyZXRLZXkwMTIzNDU2Nzg=
+      # 内存配置，根据机器实际情况调整
+      - JVM_XMS=1g
+      - JVM_XMX=1g
+      - JVM_XMN=512m
+    volumes:
+      # 数据持久化
+      - ./nacos/logs:/home/nacos/logs
+      - ./nacos/data:/home/nacos/data
+    restart: unless-stopped
+    ports:
+      # 映射端口，外部访问
+      - "8848:8848"
+      # Grpc 端口，用于客户端连接
+      - "9848:9848"
+      - "9849:9849"
