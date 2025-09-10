@@ -1,11 +1,7 @@
 docker login --username=18983663382 --password=1994okyang registry.cn-shanghai.aliyuncs.com
 
-docker load < almalinux-amd64.tar
+docker load < grafana.tar
 
-docker tag 1e867b17de43 registry.cn-shanghai.aliyuncs.com/ycp_code/hertzbeat:v1.0.0
-docker push registry.cn-shanghai.aliyuncs.com/ycp_code/hertzbeat:v1.0.0
+docker tag 3d175e50c0fe registry.cn-shanghai.aliyuncs.com/ycp_code/grafana:12.1.1
+docker push registry.cn-shanghai.aliyuncs.com/ycp_code/grafana:12.1.1
 
-docker load < rabbitmq.tar
-
-docker tag b366f32c36dc registry.cn-shanghai.aliyuncs.com/ycp_code/rabbitmq:v1.0.0
-docker push registry.cn-shanghai.aliyuncs.com/ycp_code/rabbitmq:v1.0.0
