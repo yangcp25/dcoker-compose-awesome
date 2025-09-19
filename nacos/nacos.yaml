@@ -1,0 +1,136 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: va
+  labels:
+    name: va
+---
+# === Nacos: PersistentVolumeClaims (数据持久化) ===
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nacos-data-pvc
+  namespace: va
+  labels:
+    app: nacos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nacos-logs-pvc
+  namespace: va
+  labels:
+    app: nacos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+# === Nacos Deployment (standalone) ===
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos
+  namespace: va
+  labels:
+    app: nacos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nacos
+  template:
+    metadata:
+      labels:
+        app: nacos
+    spec:
+      # 如需从私有镜像仓库拉取镜像，可在此加入 imagePullSecrets:
+      # imagePullSecrets:
+      #   - name: aliyun-registry-secret
+      containers:
+        - name: nacos
+          image: registry.cn-shanghai.aliyuncs.com/ycp_code/nacos:v1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MODE
+              value: "standalone"
+            - name: PREFER_HOST_MODE
+              value: "hostname"
+            - name: NACOS_AUTH_IDENTITY_KEY
+              value: "kse_nacos_@key"
+            - name: NACOS_AUTH_IDENTITY_VALUE
+              value: "kse_nacos_@val"
+            - name: NACOS_AUTH_ENABLE
+              value: "true"
+            - name: NACOS_AUTH_TOKEN
+              value: "VGhpc1lzTXlDdXN0b11TZWNyZXRLZXkwMTIzNDU1Nzg="
+            - name: JVM_XMS
+              value: "256m"
+            - name: JVM_XMX
+              value: "256m"
+            - name: JVM_XMN
+              value: "128m"
+          ports:
+            - name: http-console
+              containerPort: 8080
+            - name: server
+              containerPort: 8848
+            - name: grpc
+              containerPort: 9848
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          volumeMounts:
+            - name: nacos-data
+              mountPath: /home/nacos/data
+            - name: nacos-logs
+              mountPath: /home/nacos/logs
+      volumes:
+        - name: nacos-data
+          persistentVolumeClaim:
+            claimName: nacos-data-pvc
+        - name: nacos-logs
+          persistentVolumeClaim:
+            claimName: nacos-logs-pvc
+
+# === Nacos Service (NodePort, 对外映射) ===
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-service
+  namespace: va
+  labels:
+    app: nacos
+spec:
+  type: NodePort
+  selector:
+    app: nacos
+  ports:
+    - name: http-console
+      port: 8089
+      targetPort: 8080
+      # 注意：NodePort 的合法范围通常为 30000-32767；如需使用其他端口，请确认集群允许或删除 nodePort 让 K8s 自动分配
+      nodePort: 8089
+    - name: server
+      port: 8848
+      targetPort: 8848
+      nodePort: 8848
+    - name: grpc
+      port: 7848
+      targetPort: 7848
+      nodePort: 7848

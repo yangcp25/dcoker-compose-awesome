@@ -2,13 +2,13 @@
 
 # === Configuration ===
 # 1. 要导出的镜像，例如 "ubuntu:22.04" 或 "almalinux:8"
-IMAGE_TO_EXPORT="grafana/grafana:12.1.1"
+IMAGE_TO_EXPORT="rustdesk/rustdesk-server:latest"
 
 # 2. 目标平台架构, 例如 "linux/amd64", "linux/arm64", "linux/s390x"
 TARGET_PLATFORM="linux/amd64"
 
 # 3. 输出的 .tar 文件名
-OUTPUT_FILENAME="grafana.tar"
+OUTPUT_FILENAME="rustdesk.tar"
 # === End of Configuration ===
 
 

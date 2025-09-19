@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  hbbs:
+    container_name: rustdesk_hbbs
+    image: registry.cn-shanghai.aliyuncs.com/ycp_code/rustdesk:1.0.0
+    command: hbbs
+    volumes:
+      - ./data:/root
+    network_mode: "host"
+    restart: unless-stopped
