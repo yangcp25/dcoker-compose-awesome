@@ -8,7 +8,7 @@ services:
       - PHP_DATE_TIMEZONE=Asia/Shanghai
     restart: always
     ports:
-      - "8090:80"
+      - "80:80"
     volumes:
       - ./:/app/
       - ./ci-nginx.conf:/opt/docker/etc/nginx/vhost.conf
